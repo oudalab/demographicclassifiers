@@ -1,0 +1,50 @@
+{
+    "training_files": ["classified_tweets_latest.json.gz",
+                       "resources/07292017.json.gz",
+                       "resources/08022017.json.gz",
+                       "resources/08072017.json.gz",
+                       "resources/08082017.json.gz", 
+                       "resources/08242017.json.gz"],
+    "labels" : ["junk","relevant","irrelevant"],
+    "classifier" : "resources/foodborne.pkl",
+    "model": {
+        "embedding": {
+            "max_features": 10000,
+            "output_dim": 150,
+            "embeddings_initializer": "uniform",
+            "input_length": "TODO"
+        },
+        "spacialdropout1d": {"rate": 0.5},
+        "globalmaxpooling1d": null,
+        "dense": {
+            "units" : 1,
+            "activation": "sigmoid"
+        },
+        "adam" : {
+            "lr": 0.001,
+            "beta_1": 0.9,
+            "beta_2": 0.999,
+            "epsilon": 0.00000001,
+            "decay": 0.0
+        },
+        "compile": {
+            "loss": "binary_crossentropy",
+            "optimizer": "adam",
+            "metrics": ["accuracy"]
+        },
+        "fit": {
+            "batch_size": 64,
+            "epochs": 30,
+            "validation_split": 0.2
+        },
+        "pipeline": {
+            "tokenizer": null
+        },
+        "params": {
+            "verbose": 2
+        },
+        "label_encoder": null
+    }
+}
+
+

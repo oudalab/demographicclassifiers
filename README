@@ -1,0 +1,14 @@
+
+# RWJF Classifiers
+
+This directory contains executable classifiers to predict foodborne, exercise, and food tweets.
+
+TODO add full explaination of files and data structure.
+
+TODO add summary examples of results.
+
+Project dependencies are recorded using the [pipenv](https://docs.pipenv.org/) python package manager.
+
+This directory structure is modeled after @Ahmkel's project template structure https://github.com/Ahmkel/Keras-Project-Template
+
+To run, `python3 -m pipenv run python main.py`

@@ -1,0 +1,10 @@
+{
+    "training_files": ["classified_tweets_latest.json.gz",
+                       "resources/07292017.json.gz",
+                       "resources/08022017.json.gz",
+                       "resources/08072017.json.gz",
+                       "resources/08082017.json.gz", 
+                       "resources/08242017.json.gz"],
+    "labels": ["healthy","unhealthy","junk"],
+    "classifier": "resources/food.pkl"
+}
