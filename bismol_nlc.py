@@ -59,10 +59,10 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(levelname)s %(message)s')
     
-    z = pd.read_json(sys.argv[1], lines=True, precise_float=True)
+    z = pd.read_json(sys.argv[1], lines=True, dtype=object, precise_float=True)
     if len(intersection(['id_str'], list(z))) == 0:
          z['id_str'] = z['_id']
-    z['id_str'] = z['id_str'].apply(lambda x: "{:.0f}".format(x))
+    # z['id_str'] = z['id_str'].apply(lambda x: "{:.0f}".format(x))
     z = z[['id_str', 'text']]
     z.fillna(value="", inplace=True)
     result = foodborne_predict(z)
