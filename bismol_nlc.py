@@ -1,4 +1,3 @@
-
 """
 Usage: time python3 -m pipenv run python bismol.py arg1 arg2
 """
@@ -60,6 +59,7 @@ if __name__ == '__main__':
                         format='%(asctime)s %(levelname)s %(message)s')
     
     z = pd.read_json(sys.argv[1], lines=True, dtype=object, precise_float=True)
+    logging.info("types: {}".format(z.dtypes))
     if len(intersection(['id_str'], list(z))) == 0:
          z['id_str'] = z['_id']
     # z['id_str'] = z['id_str'].apply(lambda x: "{:.0f}".format(x))
@@ -71,6 +71,7 @@ if __name__ == '__main__':
 
     # Return non junk results
     print(result.query("prediction != 'junk'"))
-    result.to_csv(sys.argv[2], encoding="utf-8")
+    result = result.replace('\n',' ', regex=True)
+    result.to_csv(sys.argv[2], encoding="utf-8", sep="\t", index=False )
     
     # TODO write out in a perticular file format
