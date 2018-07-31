@@ -1,6 +1,6 @@
 
 """
-Usage: time python3 -m pipenv run python bismol.py
+Usage: time pipenv run python bismol.py <tweet-file> <output-file>
 """
 
 import json
@@ -14,6 +14,45 @@ from data_loader.foodborne_loader import FoodBorneDataLoader
 from data_loader.food_loader import FoodDataLoader
 from trainer.foodborne_trainer import FoodBorneTrainer
 from trainer.food_trainer import FoodTrainer
+
+
+@click.command()
+@click.option('--input', default="resources/tweet_exercise_20170202033134.json.gz")
+@click.option('--output', default="")
+@click.option('--borne', classifier, flag_value='borne', default=True)
+@click.option('--food', classifier, flag_value='food')
+@click.option('--exercise', classifier, flag_value='exercise')
+def main(inputfile, outputfile, classifier):
+
+    # Check if the file <p
+    z = pd.read_json("resources/tweet_exercise_20170202033134.json.gz", lines=True, precise_float=True)
+    z = pd.read_json(inputfile, lines=True, precise_float=True)
+    z['id_str'] = z['id_str'].apply(lambda x: "{:.0f}".format(x))
+    z = z[['id_str', 'text']]
+    z.fillna(value="", inplace=True)
+
+    if classifier == 'borne':
+        logging.info("Classifying {} using foodborne tweets.".format(inputfile))
+
+        result = foodborne_predict(z)
+        # pdb.set_trace()
+        print(result[['id_str', 'text', 'prediction']])
+
+        # Return non junk results
+        print(result.query("prediction != 'junk'"))
+
+        result = result.replace('\n',' ', regex=True)
+        result.to_csv(outputfile, encoding="utf-8", sep="\t", index=False )
+        
+    elif classifier == 'exercise':
+        pass
+
+    elif classifier == 'food':
+        pass
+
+    else:
+        logging.error("invalid flag selected")
+        sys.exit("bad classifier flag")
 
 
 def foodborne_predict(data):
@@ -50,21 +89,19 @@ def foodborne_predict(data):
 # TODO create interface for other food and exercise classifiers
 
 
+def intersection(lst1, lst2):
+    return list(set(lst1) & set(lst2))
+
+
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG,
-                        format='%(asctime)s %(levelname)s %(message)s')
+            format='%(levelname)s %(asctime)s %(filename)s %(lineno)d: %(message)s')
+    try:
+        nltk.data.find('tokenizers/punkt')
+    except LookupError:
+        logging.info("Downloading the nltk tokenizer/punkt model")
+        nltk.download('punkt')
+
+    main()
     
-    z = pd.read_json("resources/tweet_exercise_20170202033134.json.gz", lines=True, precise_float=True)
-    z['id_str'] = z['id_str'].apply(lambda x: "{:.0f}".format(x))
-    z = z[['id_str', 'text']]
-    z.fillna(value="", inplace=True)
-    result = foodborne_predict(z)
-    # pdb.set_trace()
-    print(result[['id_str', 'text', 'prediction']])
-
-    # Return non junk results
-    print(result.query("prediction != 'junk'"))
-
-    # TODO write out in a perticular file format
-
