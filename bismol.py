@@ -25,7 +25,7 @@ from trainer.food_trainer import FoodTrainer
 def main(inputfile, outputfile, classifier):
 
     # Check if the file <p
-    z = pd.read_json("resources/tweet_exercise_20170202033134.json.gz", lines=True, precise_float=True)
+    # z = pd.read_json("resources/tweet_exercise_20170202033134.json.gz", lines=True, precise_float=True)
     z = pd.read_json(inputfile, lines=True, precise_float=True)
     z['id_str'] = z['id_str'].apply(lambda x: "{:.0f}".format(x))
     z = z[['id_str', 'text']]
@@ -36,19 +36,25 @@ def main(inputfile, outputfile, classifier):
 
         result = foodborne_predict(z)
         # pdb.set_trace()
-        print(result[['id_str', 'text', 'prediction']])
+        logging.info(result[['id_str', 'text', 'prediction']])
 
         # Return non junk results
-        print(result.query("prediction != 'junk'"))
+        logging.info(result.query("prediction != 'junk'"))
 
         result = result.replace('\n',' ', regex=True)
         result.to_csv(outputfile, encoding="utf-8", sep="\t", index=False )
         
     elif classifier == 'exercise':
-        pass
+        logging.info("Classifying {} using exercise tweets.".format(inputfile))
+        result = exercise_predict(z)
+        result = result.replace('\n',' ', regex=True)
+        result.to_csv(outputfile, encoding="utf-8", sep="\t", index=False )
 
     elif classifier == 'food':
-        pass
+        logging.info("Classifying {} using food tweets.".format(inputfile))
+        result = food_predict(z)
+        result = result.replace('\n',' ', regex=True)
+        result.to_csv(outputfile, encoding="utf-8", sep="\t", index=False )
 
     else:
         logging.error("invalid flag selected")
@@ -81,6 +87,48 @@ def foodborne_predict(data):
     # logging.info("{} <-- {}".format(result ))
 
     # Add results to data
+    data = data.assign(prediction=result)
+
+    return data
+
+
+def exercise_predict(data):
+    """Takes in a twitter data frame that at least has 'id_str' and
+    'status' column. Returns the data fram with an appended 'prediction'
+    """
+    logging.info("Load the exercise data...")
+    el = ExerciseDataLoader()
+
+    logging.info("Create the exercise trainer...")
+    et = ExerciseTrainer()
+
+    logging.info("Fit the exercise model...")
+    et.train(*el.get_train_data())
+
+    logging.info("Run prediction...")
+    result = et.model.predict_proba(["text"])
+
+    data = data.assign(prediction=result)
+
+    return data
+
+
+def food_prediction(data): 
+    """Takes in a twitter data frame that at least has 'id_str' and
+    'status' column. Returns the data fram with an appended 'prediction'
+    """
+    logging.info("Load the food data...")
+    fl = FoodDataLoader()
+
+    logging.info("Create the food trainer...")
+    ft = FoodTrainer()
+
+    logging.info("Fit the food model...")
+    ft.train(*fl.get_train_data())
+
+    logging.info("Running prediction...")
+    result = ft.model.predict(["text"])
+
     data = data.assign(prediction=result)
 
     return data
