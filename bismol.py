@@ -11,15 +11,18 @@ import click
 import nltk
 import pandas as pd
 
+from data_loader.exercise_loader import ExerciseDataLoader
 from data_loader.foodborne_loader import FoodBorneDataLoader
 from data_loader.food_loader import FoodDataLoader
+from trainer.exercise_trainer import ExerciseTrainer
 from trainer.foodborne_trainer import FoodBorneTrainer
 from trainer.food_trainer import FoodTrainer
 
 
+
 @click.command()
-@click.option('--input', default="resources/tweet_exercise_20170202033134.json.gz")
-@click.option('--output', default="")
+@click.argument('inputfile', default="resources/tweet_exercise_20170202033134.json.gz")
+@click.argument('outputfile', default="testout.csv")
 @click.option('--borne', "classifier", flag_value='borne', default=True)
 @click.option('--food', "classifier", flag_value='food')
 @click.option('--exercise', "classifier", flag_value='exercise')
@@ -27,8 +30,13 @@ def main(inputfile, outputfile, classifier):
 
     # Check if the file <p
     # z = pd.read_json("resources/tweet_exercise_20170202033134.json.gz", lines=True, precise_float=True)
-    z = pd.read_json(inputfile, lines=True, precise_float=True)
-    z['id_str'] = z['id_str'].apply(lambda x: "{:.0f}".format(x))
+    logging.info(f"Reading the input file {inputfile}")
+    z = pd.read_json(inputfile, lines=True, dtype=object, precise_float=True)
+    logging.info(f"Input file read and updated")
+
+    if len(intersection(['id_str'], list(z))) == 0:
+        z['id_str'] = z['_id']
+
     z = z[['id_str', 'text']]
     z.fillna(value="", inplace=True)
 
@@ -146,10 +154,13 @@ def intersection(lst1, lst2):
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG,
             format='%(levelname)s %(asctime)s %(filename)s %(lineno)d: %(message)s')
+    logging.info("Logging enabled...")
+
     try:
         nltk.data.find('tokenizers/punkt')
+        logging.info("Tokenizer punkt found!")
     except LookupError:
-        logging.info("Downloading the nltk tokenizer/punkt model")
+        logging.info("Downloading the nltk tokenizer/punkt model...")
         nltk.download('punkt')
 
     main()

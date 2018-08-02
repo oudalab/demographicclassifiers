@@ -49,7 +49,7 @@ class ExerciseModel(BaseModel):
 
     def _create_model(self):
         config = self.config
-        logging.info("Creating model layers from config file...")
+        logging.info("Creating layers from config file...")
         layers = []
         layers.append(Embedding(config["model"]["embedding"]["max_features"]+1,
                             output_dim=config["model"]["embedding"]["output_dim"],
@@ -59,6 +59,8 @@ class ExerciseModel(BaseModel):
         layers.append(GlobalMaxPooling1D())
         layers.append(Dense(units=config["model"]["dense"]["units"],
                          activation=config["model"]["dense"]["activation"]))
+
+        logging.info("Creating the Adam model...")
         adam = Adam(lr=config["model"]["adam"]["lr"],
                     beta_1=config["model"]["adam"]["beta_1"], 
                     beta_2=config["model"]["adam"]["beta_2"],

@@ -25,7 +25,7 @@ class FoodDataLoader(BaseDataLoader):
         logging.info("Reading and formatting classified_tweets_latest")
         ftweets = pd.read_json("resources/classified_tweets_latest.json.gz",
                                 orient="columns",
-                                compression="gzip")
+                                dtype=object)
 
         # Add the tweet text as a column
         ftweets = ftweets.assign(tweets_text = ftweets["tweet"]
@@ -48,7 +48,7 @@ class FoodDataLoader(BaseDataLoader):
 
         # Now, Read other files
         logging.info("Reading and cleaning files: {}".format(config["training_files"][1:]))
-        twts = pd.concat([pd.read_json(gzfile, orient="columns", compression="gzip")
+        twts = pd.concat([pd.read_json(gzfile, dtype=object, orient="columns", compression="gzip")
                    for gzfile in config["training_files"][1:]],
                    ignore_index=True)
 

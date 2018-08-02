@@ -12,3 +12,28 @@ Project dependencies are recorded using the [pipenv](https://docs.pipenv.org/) p
 This directory structure is modeled after @Ahmkel's project template structure https://github.com/Ahmkel/Keras-Project-Template
 
 To run, `python3 -m pipenv run python main.py`
+
+
+# Installation
+
+The system is currently configured to work with python3.7 on 
+
+```bash
+pipenv install cython
+pipenv install matplotlib numpy gensim click pandas keras
+```
+
+Tensor flow and sklearn currently have problems installing on Python3.7
+You can use the scripts below as work around for installing the base version
+
+```bash
+pipenv install git+https://github.com/scikit-learn/scikit-learn
+pipenv install --verbose https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-1.9.0-py3-none-any.whl
+```
+
+Next, tensorflow uses `async` as a function parameter. This is illegal in python 3.7 because `async` is now a keyword. You will need to change this word. You can go to the file `pywrap_tensorflow_internal.py` and change the workd `async` to `async1` on lines 114, 115, 150, and 151.
+
+
+
+
+
