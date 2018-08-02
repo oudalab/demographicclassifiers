@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 cython = "*"
-scikit-learn = {git = "https://github.com/scikit-learn/scikit-learn"}
+scikit-learn = "*" 
 nltk = "*"
 pandas = "*"
 numpy = "*"
@@ -13,9 +13,9 @@ gensim = "*"
 matplotlib = "*"
 click = "*"
 keras = "*"
-tensorflow = {file = "https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-1.9.0-py3-none-any.whl"}
+tensorflow = "*" 
 
 [dev-packages]
 
 [requires]
-python_version = "3.7"
+python_version = "3.6"

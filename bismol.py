@@ -115,7 +115,7 @@ def exercise_predict(data):
     et.train(*el.get_train_data())
 
     logging.info("Run prediction...")
-    result = et.model.predict_proba(["text"])
+    result = et.model.predict_proba(data["text"])
 
     data = data.assign(prediction=result)
 

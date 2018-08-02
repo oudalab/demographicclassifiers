@@ -88,7 +88,6 @@ class ExerciseModel(BaseModel):
         config = self.config
         tokenizer = config["model"]["pipeline"]["tokenizer"]
         label_encoder = config["model"]["label_encoder"]
-        pdb.set_trace()
         # TODO debug results with this
         # z = ["I am doing sprint and jogging around the block"]
         # self.pipeline.predict(pad_sequences(tokenizer.texts_to_sequences(z), maxlen=config["model"]["embedding"]["input_length"]))
