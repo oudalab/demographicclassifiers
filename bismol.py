@@ -8,6 +8,7 @@ import logging
 import pdb
 
 import click
+import nltk
 import pandas as pd
 
 from data_loader.foodborne_loader import FoodBorneDataLoader
@@ -19,9 +20,9 @@ from trainer.food_trainer import FoodTrainer
 @click.command()
 @click.option('--input', default="resources/tweet_exercise_20170202033134.json.gz")
 @click.option('--output', default="")
-@click.option('--borne', classifier, flag_value='borne', default=True)
-@click.option('--food', classifier, flag_value='food')
-@click.option('--exercise', classifier, flag_value='exercise')
+@click.option('--borne', "classifier", flag_value='borne', default=True)
+@click.option('--food', "classifier", flag_value='food')
+@click.option('--exercise', "classifier", flag_value='exercise')
 def main(inputfile, outputfile, classifier):
 
     # Check if the file <p
