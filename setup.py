@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 setup(
-    name='democlassifiers',
+    name='demographicclassifiers',
     version='0.1',
     author='',
     authour_email='cgrant@ou.edu',

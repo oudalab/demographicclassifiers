@@ -19,4 +19,12 @@ time pipenv run python bismol.py --borne \
 	resources/tweets_foodborne_geotagged_00.json \
 	testout-`date '+%Y-%m-%d-%H-%M-%S'`.csv
 }
-testfoodborne
+#testfoodborne
+
+testfood () {
+
+time pipenv run python bismol.py --food \
+	resources/tweet_food_20170911104612.json.gz \
+	testout-`date '+%Y-%m-%d-%H-%M-%S'`.csv
+}
+testfood
