@@ -82,6 +82,9 @@ class ExerciseDataLoader(BaseDataLoader):
 
         (self.X_train, self.X_test, self.y_train, self.y_test) = tts
 
+        # Filter tweets
+        self.filter_tweet()
+
 
     def get_train_data(self):
         return self.X_train, self.y_train
@@ -101,4 +104,5 @@ class ExerciseDataLoader(BaseDataLoader):
         # 3) String match with negative words.
         # Combine them all into one big regex?
         pass
+
 

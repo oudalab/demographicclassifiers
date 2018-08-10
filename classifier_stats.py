@@ -7,6 +7,7 @@ Usage: time pipenv run python classifier_stats.py [--food] [--exercise] [--borne
 
 import json
 import logging
+import pdb
 
 import click
 
@@ -94,13 +95,36 @@ def main(borne, food, exercise):
 
     if exercise:
         logging.info("Computing exercise classifier stats...")
-        # TODO Create data loader
-        # TODO create data traininer
-        # TODO Split training data
-        # TODO train
+        # Create data loader
+        el = ExerciseDataLoader()
 
-        # TODO Print training data size and split
-        # TODO evaluate results
+        # Create data traininer
+        et = ExerciseTrainer()
+
+        # Split training data
+        (X_train, y_train) = el.get_train_data()
+        logging.info(f"Training size: {len(X_train)}")
+
+        (X_test, y_test) = el.get_test_data()
+        logging.info(f"Testing size: {len(X_test)}")
+
+        # Train
+        et.train(X_train, y_train)
+        pdb.set_trace()
+
+        # Print training data size and split
+        y_pred = et.model.predict_proba(X_test)
+        results = precision_recall_fscore_support(y_test, y_pred)
+        data = {"precision": results[0].tolist(),
+                "recall": results[1].tolist(),
+                "fscore": results[2].tolist(),
+                "support": results[3].tolist(),
+                "train_size": len(y_train),
+                "test_size": len(y_test)
+                }
+
+        logging.info(json.dumps(data))
+
         # TODO print result to stdout
 
 
