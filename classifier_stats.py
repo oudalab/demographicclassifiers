@@ -5,6 +5,7 @@ This module when run, produces stats for classifiers.
 Usage: time pipenv run python classifier_stats.py [--food] [--exercise] [--borne]
 """
 
+import json
 import logging
 
 import click
@@ -40,35 +41,55 @@ def main(borne, food, exercise):
         (X_test, y_test) = fbl.get_test_data()
         logging.info(f"Testing size: {len(X_test)}")
 
-        # TODO train
+        # train
         fbt.train(X_train, y_train)
 
         y_pred = fbt.model.predict(X_test)
-        results =  precision_recall_fscore_support(y_test, y_pred)
-        data = {"precision": results[0],
-                "recall": results[1],
-                "fscore": results[2],
-                "support": results[3],
+        results = precision_recall_fscore_support(y_test, y_pred)
+        data = {"precision": results[0].tolist(),
+                "recall": results[1].tolist(),
+                "fscore": results[2].tolist(),
+                "support": results[3].tolist(),
                 "train_size": len(y_train),
                 "test_size": len(y_test)
                }
 
+        # Print training data size and split
+        logging.info(json.dumps(data))
 
-
-        # TODO Print training data size and split
-        logging.info(data)
-        # TODO evaluate results
         # TODO print result to stdout
 
     if food:
         logging.info("Computing food classifier stats...")
-        # TODO Create data loader
-        # TODO create data traininer
-        # TODO Split training data
-        # TODO train
+        # Create data loader
+        fl = FoodDataLoader()
 
-        # TODO Print training data size and split
-        # TODO evaluate results
+        # Create data traininer
+        ft = FoodTrainer()
+
+        # Split training data
+        (X_train, y_train) = fl.get_train_data()
+        logging.info(f"Training size: {len(X_train)}")
+
+        (X_test, y_test) = fl.get_test_data()
+        logging.info(f"Testing size: {len(X_test)}")
+
+        # Train
+        ft.train(X_train, y_train)
+
+        # Print training data size and split
+        y_pred = ft.model.predict(X_test)
+        results = precision_recall_fscore_support(y_test, y_pred)
+        data = {"precision": results[0].tolist(),
+                "recall": results[1].tolist(),
+                "fscore": results[2].tolist(),
+                "support": results[3].tolist(),
+                "train_size": len(y_train),
+                "test_size": len(y_test)
+               }
+
+        logging.info(json.dumps(data))
+
         # TODO print result to stdout
 
     if exercise:

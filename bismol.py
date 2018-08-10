@@ -115,6 +115,7 @@ def exercise_predict(data):
     et.train(*el.get_train_data())
 
     logging.info("Run prediction...")
+    # FIXME can just do predict?
     result = et.model.predict_proba(data["text"])
 
     data = data.assign(prediction=result)
