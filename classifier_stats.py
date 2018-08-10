@@ -17,13 +17,28 @@ import click
 def main(borne, food, exercise):
 
     if borne:
-        logging.info("Computing foodborne classifier stats")
+        logging.info("Computing foodborne classifier stats...")
+        # TODO Create data loader
+        # TODO create data traininer
+        # TODO Split training data
+        # TODO evaluate results
+        # TODO print result to stdout
 
     if food:
-        logging.info("Computing food classifier stats")
+        logging.info("Computing food classifier stats...")
+        # TODO Create data loader
+        # TODO create data traininer
+        # TODO Split training data
+        # TODO evaluate results
+        # TODO print result to stdout
 
     if exercise:
-        logging.info("Computing exercise classifier stats")
+        logging.info("Computing exercise classifier stats...")
+        # TODO Create data loader
+        # TODO create data traininer
+        # TODO Split training data
+        # TODO evaluate results
+        # TODO print result to stdout
 
 
 if __name__ == '__main__':
