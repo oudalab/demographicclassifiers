@@ -49,7 +49,7 @@ class FoodBorneTrainer(BaseTrain):
         doesn ot exist.
         """
 
-        logging.info("Training the foodborne model.")
+        logging.info("Training the foodborne model...")
         self.model.fit(X, y)
         logging.info("Done training.")
         return self.model
