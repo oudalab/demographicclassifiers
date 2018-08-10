@@ -4,7 +4,8 @@
                        "resources/08022017.json.gz",
                        "resources/08072017.json.gz",
                        "resources/08082017.json.gz", 
-                       "resources/08242017.json.gz"],
+                       "resources/08242017.json.gz",
+                       "resources/08092018.json.gz"],
     "labels" : ["junk","relevant","irrelevant"],
     "classifier" : "resources/foodborne.pkl",
     "model": {

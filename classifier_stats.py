@@ -21,6 +21,7 @@ def main(borne, food, exercise):
         # TODO Create data loader
         # TODO create data traininer
         # TODO Split training data
+        # TODO Print training data size and split
         # TODO evaluate results
         # TODO print result to stdout
 
@@ -29,6 +30,7 @@ def main(borne, food, exercise):
         # TODO Create data loader
         # TODO create data traininer
         # TODO Split training data
+        # TODO Print training data size and split
         # TODO evaluate results
         # TODO print result to stdout
 
@@ -37,6 +39,7 @@ def main(borne, food, exercise):
         # TODO Create data loader
         # TODO create data traininer
         # TODO Split training data
+        # TODO Print training data size and split
         # TODO evaluate results
         # TODO print result to stdout
 
