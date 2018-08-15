@@ -71,6 +71,9 @@ class ExerciseDataLoader(BaseDataLoader):
 
         data = data.loc[data.label_data.isin(config["labels"])]
 
+        # Filter tweets
+        data = self.filter_tweets(data)
+
         logging.info("Assigning labels to {}".format(config["labels"]))
         self.labels = config["labels"]
 
@@ -82,8 +85,6 @@ class ExerciseDataLoader(BaseDataLoader):
 
         (self.X_train, self.X_test, self.y_train, self.y_test) = tts
 
-        # Filter tweets
-        self.filter_tweet()
 
 
     def get_train_data(self):
@@ -94,15 +95,22 @@ class ExerciseDataLoader(BaseDataLoader):
         return self.X_test, self.y_test
 
 
-    def filter_tweet(self):
-        # TODO check the wordlist and return true if it contains one of the
-        # words and satisfies all criteria
+    def filter_tweet(self, df):
+        """
+            There are three types of checks.
+            1) Exact string match
+            2) Exact Phrase match
+            3) String match with negative words.
+            Combine them all into different functions
+            and filter tweets.
+            Return the filtered data structure.
+        """
+        elist = []
+        with open("resources/exerciselist.txt") as elfile:
+            elist = [term.strip() for term in elfile.readlines()]
+        
+        # If a term contains quotes, remove them
 
-        # There are three types of checks.
-        # 1) Exact string match
-        # 2) Exact Phrase match
-        # 3) String match with negative words.
-        # Combine them all into one big regex?
-        pass
+        # If a term contains negative words, split them and rege
 
 

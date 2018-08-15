@@ -45,7 +45,7 @@ class ExerciseModel(BaseModel):
             ('clf', clf)
         ])
         #self.pipeline = pipeline
-        self.pipeline = clf
+        self.model = clf
 
     def _create_model(self):
         config = self.config
@@ -81,7 +81,7 @@ class ExerciseModel(BaseModel):
 
     def fit(self, X, y):
 
-        return self.pipeline.fit(X, y)
+        return self.model.fit(X, y)
 
 
     def predict_proba(self, X):
@@ -93,9 +93,12 @@ class ExerciseModel(BaseModel):
         # self.pipeline.predict(pad_sequences(tokenizer.texts_to_sequences(z), maxlen=config["model"]["embedding"]["input_length"]))
         # label_encoder.inverse_transform([1])
 
+        pdb.set_trace()
+
         X = tokenizer.texts_to_sequences(X)
         X = pad_sequences(X, maxlen=config["model"]["embedding"]["input_length"])
-        return self.pipeline.predict_proba(X)
+        result = self.model.predict_proba(X)
+        return result
 
 
     def load(self, loc=None):

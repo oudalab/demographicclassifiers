@@ -39,9 +39,10 @@ class ExerciseTrainer(BaseTrain):
         integer_encoded = label_encoder.fit_transform(y)
         config["model"]["label_encoder"] = label_encoder
         onehot_encoder = OneHotEncoder(sparse=False)
-        integer_encoded = integer_encoded.reshape(len(integer_encoded), 1)
+        integer_encoded = integer_encoded.reshape(len(integer_encoded), 1) # FIXME, what is this?
 
         labels = onehot_encoder.fit_transform(integer_encoded)
+        pdb.set_trace()
         
         max_length = np.max([len(i.split()) for i in X]) 
         config["model"]["embedding"]["input_length"] = max_length
