@@ -30,9 +30,10 @@ class ExerciseDataLoader(BaseDataLoader):
         logging.info("Classified tweets loaded")
 
         # Add the tweet text as a column
-        etweets = etweets.assign(tweets_text = etweets["tweet"]
-                                        .apply(lambda tweet : eval(tweet))
-                                        .apply(lambda tweet : tweet["text"]))
+        # etweets = etweets.assign(tweets_text = etweets["tweet"]
+        #                                .apply(lambda tweet : eval(tweet))
+        #                                .apply(lambda tweet : tweet["text"]))
+        etweets = etweets.assign(tweets_text = etweets["status"])
  
         # Tweets that are not foodborne or are not labeled
         etweets = etweets.loc[etweets["exercise"] != "None"]
@@ -86,7 +87,6 @@ class ExerciseDataLoader(BaseDataLoader):
         (self.X_train, self.X_test, self.y_train, self.y_test) = tts
 
 
-
     def get_train_data(self):
         return self.X_train, self.y_train
 
@@ -95,7 +95,7 @@ class ExerciseDataLoader(BaseDataLoader):
         return self.X_test, self.y_test
 
 
-    def filter_tweet(self, df):
+    def filter_tweets(self, df):
         """
             There are three types of checks.
             1) Exact string match
@@ -106,11 +106,13 @@ class ExerciseDataLoader(BaseDataLoader):
             Return the filtered data structure.
         """
         elist = []
-        with open("resources/exerciselist.txt") as elfile:
+        with open("resources/exerciselistregex.txt") as elfile:
             elist = [term.strip() for term in elfile.readlines()]
+            
+            pattern = r"|".join(elist)
+            p = re.compile(pattern)
         
-        # If a term contains quotes, remove them
-
-        # If a term contains negative words, split them and rege
-
+            myfilter = df.tweets_text.str.lower().map(lambda z, p=p: True if p.match(z) else False)
+            df = df[myfilter]
+            return df
 
