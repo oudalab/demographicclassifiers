@@ -72,11 +72,16 @@ class ExerciseDataLoader(BaseDataLoader):
 
         data = data.loc[data.label_data.isin(config["labels"])]
 
+        # Move all junk to irrelevan
+        data.loc[data.label_data == 'junk', 'label_data'] = 'irrelevant'
         # Filter tweets
         data = self.filter_tweets(data)
 
+
         logging.info("Assigning labels to {}".format(config["labels"]))
-        self.labels = config["labels"]
+        
+        # self.labels = config["labels"] FIXME now only using relevant and irrelevant
+        self.labels = ['relevant', 'irrelevant'] # temporary fix
 
         logging.info("Now splitting data into test and train sets")
         # self.data = data

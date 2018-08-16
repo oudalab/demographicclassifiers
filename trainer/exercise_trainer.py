@@ -35,6 +35,10 @@ class ExerciseTrainer(BaseTrain):
         logging.info("Training the food model.")
         config = self.config
 
+        # Changing all junk tweets to irrelevant
+        # Only use two labels
+        y.loc[y == 'junk'] = 'irrelevant'
+
         label_encoder = LabelEncoder()
         integer_encoded = label_encoder.fit_transform(y)
         config["model"]["label_encoder"] = label_encoder
@@ -42,7 +46,6 @@ class ExerciseTrainer(BaseTrain):
         integer_encoded = integer_encoded.reshape(len(integer_encoded), 1) # FIXME, what is this?
 
         labels = onehot_encoder.fit_transform(integer_encoded)
-        # pdb.set_trace()
         
         max_length = np.max([len(i.split()) for i in X]) 
         config["model"]["embedding"]["input_length"] = max_length

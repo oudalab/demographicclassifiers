@@ -80,6 +80,7 @@ def main(borne, food, exercise):
 
         # Print training data size and split
         y_pred = ft.model.predict(X_test)
+        
         results = precision_recall_fscore_support(y_test, y_pred)
         data = {"precision": results[0].tolist(),
                 "recall": results[1].tolist(),
@@ -110,7 +111,6 @@ def main(borne, food, exercise):
 
         # Train
         et.train(X_train, y_train)
-        pdb.set_trace()
 
         # Print training data size and split
         y_pred = et.model.predict_proba(X_test)

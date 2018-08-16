@@ -4,6 +4,8 @@ from base.base_model import BaseModel
 import logging
 import pdb
 
+import numpy as np
+
 from keras.layers import Dense
 from keras.layers import Embedding
 from keras.layers import GlobalMaxPooling1D
@@ -97,8 +99,11 @@ class ExerciseModel(BaseModel):
 
         X = tokenizer.texts_to_sequences(X)
         X = pad_sequences(X, maxlen=config["model"]["embedding"]["input_length"])
-        result = self.model.predict_proba(X)
-        return result
+        pred_cont = self.model.predict_proba(X)
+        pred_binary = np.array([0 if x<0.5 else 1 for x in pred_cont.reshape(-1)])
+        pred_class = label_encoder.inverse_transform(pred_binary)
+
+        return pred_class
 
 
     def load(self, loc=None):
